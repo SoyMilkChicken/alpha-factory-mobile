@@ -1,8 +1,6 @@
 /**
  * Onboarding Screen - First-time user setup
  */
-
-
 import React, { useState } from 'react';
 import {
   View,
@@ -18,7 +16,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Check } from 'lucide-react-native';
 import { useSettings, ViewMode } from '../contexts/SettingsContext';
 
-// ... rest of the file stays the same
 type Step = 'welcome' | 'language' | 'experience' | 'tutorial' | 'complete';
 
 interface ExperienceLevel {
@@ -30,7 +27,7 @@ interface ExperienceLevel {
   icon: string;
 }
 
-const { setLanguage, setViewMode, loadFAANGPortfolio, loadStanPortfolio } = useSettings();
+// [FIX] REMOVED: const { ... } = useSettings(); <-- This was causing the crash
 
 const experienceLevels: ExperienceLevel[] = [
   {
@@ -101,21 +98,17 @@ export default function OnboardingScreen() {
 
   const handleComplete = async () => {
     try {
-      // Save onboarding complete
       await AsyncStorage.setItem('@alpha_factory_onboarded', 'true');
-  
-      // Apply settings
+      
       setLanguage(selectedLanguage);
       setViewMode(selectedExperience);
   
-      // Auto-load default tickers for beginners/intermediate
       if (selectedExperience === 'beginner') {
         loadFAANGPortfolio();
       } else if (selectedExperience === 'intermediate') {
         loadStanPortfolio();
       }
   
-      // Navigate to main app
       router.replace('/(tabs)');
     } catch (error) {
       console.error('Error completing onboarding:', error);
@@ -123,14 +116,12 @@ export default function OnboardingScreen() {
     }
   };
 
-  // Checkmark component
   const CheckMark = () => (
     <View className="w-7 h-7 bg-black rounded-full items-center justify-center">
       <Check size={16} color="#ffffff" strokeWidth={3} />
     </View>
   );
 
-  // Welcome Screen
   if (step === 'welcome') {
     return (
       <SafeAreaView className="flex-1 bg-white" edges={['top', 'bottom']}>
@@ -155,7 +146,6 @@ export default function OnboardingScreen() {
     );
   }
 
-  // Language Selection
   if (step === 'language') {
     return (
       <SafeAreaView className="flex-1 bg-white" edges={['top', 'bottom']}>
@@ -223,7 +213,6 @@ export default function OnboardingScreen() {
     );
   }
 
-  // Experience Level
   if (step === 'experience') {
     return (
       <SafeAreaView className="flex-1 bg-white" edges={['top', 'bottom']}>
@@ -285,7 +274,6 @@ export default function OnboardingScreen() {
     );
   }
 
-  // Tutorial (for beginners/intermediate)
   if (step === 'tutorial') {
     const slide = tutorialSlides[tutorialIndex];
     const isLast = tutorialIndex === tutorialSlides.length - 1;
@@ -302,7 +290,6 @@ export default function OnboardingScreen() {
           </Text>
         </View>
 
-        {/* Progress dots */}
         <View className="flex-row justify-center mb-8">
           {tutorialSlides.map((_, i) => (
             <View
@@ -336,7 +323,6 @@ export default function OnboardingScreen() {
     );
   }
 
-  // Complete
   return (
     <SafeAreaView className="flex-1 bg-white" edges={['top', 'bottom']}>
       <View className="flex-1 justify-center items-center p-8">

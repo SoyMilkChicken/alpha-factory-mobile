@@ -1,11 +1,11 @@
 /**
  * Alpha Factory Mobile - Root Layout
  */
-
+import "../global.css";
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SettingsProvider } from '../contexts/SettingsContext';
-import "../global.css";
+
 
 export default function RootLayout() {
   return (
